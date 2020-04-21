@@ -1,0 +1,9 @@
+Host okd-master
+    Hostname okd-master.otg.ae
+    User origin
+Host okd-node1
+    Hostname okd-node1.otg.ae
+    User origin
+Host okd-node2
+    Hostname okd-node2.otg.ae
+    User origin
