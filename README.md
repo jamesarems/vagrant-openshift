@@ -1,9 +1,10 @@
-# OKD 3.11 Vagrant setup for CentOS 7
+# OKD 3.11 & Rook Vagrant setup for CentOS 7 
 
 ### Setup's are,
 
 - 1 master and 2 worker nodes
 - OS CentOS 7.x
+- Additional disk for rook Ceph
 - Vagrant
 - Libvirt (kvm)
 

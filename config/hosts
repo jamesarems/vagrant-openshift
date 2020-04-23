@@ -63,8 +63,14 @@ openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 
 
 #Disable health check
 openshift_disable_check=memory_availability,disk_availability,docker_image_availability
+#Enable firewalld
 os_firewall_use_firewalld=True
+#Application routing address
 openshift_master_default_subdomain=apps.otg.ae
+openshift_hosted_registry_routehost=registry.otg.ae
+# Web Console port
+openshift_master_api_port=8443
+openshift_master_console_port=8443
 
 # host group for masters
 [masters]

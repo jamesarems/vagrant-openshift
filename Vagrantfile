@@ -70,12 +70,14 @@ $master_script = <<-SHELL
       su - origin -c "ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml"
       sleep 3s
       su - origin -c "ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml"
+      echo "[>>>>>>>>>>>>>>>>] Creating admin user"
+      sleep 3s
+      su - origin -c "sudo htpasswd -b -c /etc/origin/master/htpasswd admin admin"
+      su - origin -c "oc adm policy add-cluster-role-to-user cluster-admin admin"
+      echo "User admin has been created with cluster-admin privillege."
       echo "[>>>>>>>>>>>>>>>>] Installation completed"
       echo "----------------------------"
-      echo "1. Login to Origin account , create a ssh-key."
-      echo "2. Copy key to other hosts"
-      echo "3. Run  ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml"
-      echo "4. Run  ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml"      
+      
 SHELL
 
 Vagrant.configure("2") do |config|
@@ -87,7 +89,9 @@ Vagrant.configure("2") do |config|
     okd_master.vm.network :public_network, :mac => $master_mac, :dev => "br0", :mode => "bridge", :type => "bridge"
     okd_master.vm.provider :libvirt do |domain|
       domain.memory = 16384
-      domain.cpus = 4
+      domain.cpus = 6
+      domain.storage :file,
+        :size => '50G'
     end
     okd_master.vm.provision "shell", inline: $host_script
     okd_master.vm.provision "shell", inline: $master_script
@@ -101,7 +105,9 @@ Vagrant.configure("2") do |config|
     okd_node1.vm.network :public_network, :mac => $node1_mac, :dev => "br0", :mode => "bridge", :type => "bridge"
     okd_node1.vm.provider :libvirt do |domain|
       domain.memory = 16384
-      domain.cpus = 4
+      domain.cpus = 6
+      domain.storage :file, 
+        :size => '50G'
     end
     okd_node1.vm.provision "shell", inline: $host_script
     okd_node1.vm.synced_folder './config', '/vagrant', type: 'rsync'
@@ -114,22 +120,23 @@ Vagrant.configure("2") do |config|
     okd_node2.vm.network :public_network, :mac => $node2_mac, :dev => "br0", :mode => "bridge", :type => "bridge"
     okd_node2.vm.provider :libvirt do |domain|
       domain.memory = 16384
-      domain.cpus = 4
+      domain.cpus = 6
+      domain.storage :file, 
+        :size => '50G'
     end
     okd_node2.vm.provision "shell", inline: $host_script
     okd_node2.vm.synced_folder './config', '/vagrant', type: 'rsync'
   end
 
-  # Options for Libvirt Vagrant provider.
   config.vm.provider :libvirt do |libvirt|
-
-    libvirt.driver = "kvm"
-    libvirt.host = "192.168.99.50"
+    libvirt.driver = "qemu"
+    libvirt.qemu_use_session = false
     libvirt.connect_via_ssh = true
     libvirt.username = "root"
     libvirt.password = "it@otg"
     libvirt.storage_pool_name = "default"
   end
+
 end
 
 
