@@ -7,3 +7,6 @@ Host okd-node1
 Host okd-node2
     Hostname okd-node2.otg.ae
     User origin
+Host okd-node3
+    Hostname okd-node3.otg.ae
+    User origin

@@ -5,11 +5,13 @@
 $master_host = "okd-master.otg.ae"
 $node1_host = "okd-node1.otg.ae"
 $node2_host = "okd-node2.otg.ae"
+$node3_host = "okd-node3.otg.ae"
 
 #Mac address
 $master_mac = "8e:94:5b:64:4a:14"
 $node1_mac = "8e:94:5b:64:4a:15"
 $node2_mac = "8e:94:5b:64:4a:16"
+$node3_mac = "8e:94:5b:64:4a:17"
 
 #Host script
 $host_script = <<-SHELL
@@ -33,6 +35,7 @@ $host_script = <<-SHELL
       echo "192.168.99.51	okd-master.otg.ae	okd-master" >> /etc/hosts
       echo "192.168.99.52	okd-node1.otg.ae	okd-node1" >> /etc/hosts
       echo "192.168.99.53	okd-node2.otg.ae	okd-node2" >> /etc/hosts
+      echo "192.168.99.54	okd-node3.otg.ae	okd-node3" >> /etc/hosts
       echo "[>>>>>>>>>>>>>>>>] Create user Origin and its sudo file"
       useradd origin
       echo "origin" | passwd --stdin origin
@@ -60,6 +63,7 @@ $master_script = <<-SHELL
       ssh-keyscan -t ecdsa-sha2-nistp256 okd-master.otg.ae >> /home/origin/.ssh/known_hosts
       ssh-keyscan -t ecdsa-sha2-nistp256 okd-node1.otg.ae >> /home/origin/.ssh/known_hosts
       ssh-keyscan -t ecdsa-sha2-nistp256 okd-node2.otg.ae >> /home/origin/.ssh/known_hosts
+      ssh-keyscan -t ecdsa-sha2-nistp256 okd-node3.otg.ae >> /home/origin/.ssh/known_hosts
       chmod 644 /home/origin/.ssh/known_hosts
       cp -r /vagrant/id_rsa* /home/origin/.ssh/
       chmod 600 /home/origin/.ssh/id_rsa
@@ -90,8 +94,6 @@ Vagrant.configure("2") do |config|
     okd_master.vm.provider :libvirt do |domain|
       domain.memory = 16384
       domain.cpus = 6
-      domain.storage :file,
-        :size => '50G'
     end
     okd_master.vm.provision "shell", inline: $host_script
     okd_master.vm.provision "shell", inline: $master_script
@@ -127,9 +129,25 @@ Vagrant.configure("2") do |config|
     okd_node2.vm.provision "shell", inline: $host_script
     okd_node2.vm.synced_folder './config', '/vagrant', type: 'rsync'
   end
+  
+  config.vm.define :okd_node3 do |okd_node3|
+    okd_node3.vm.box = "centos/7"
+    okd_node3.vm.hostname = $node3_host
+    #test_vm.vm.network :private_network, :ip => '10.20.30.40'
+    okd_node3.vm.network :public_network, :mac => $node3_mac, :dev => "br0", :mode => "bridge", :type => "bridge"
+    okd_node3.vm.provider :libvirt do |domain|
+      domain.memory = 16384
+      domain.cpus = 6
+      domain.storage :file, 
+        :size => '50G'
+    end
+    okd_node3.vm.provision "shell", inline: $host_script
+    okd_node3.vm.synced_folder './config', '/vagrant', type: 'rsync'
+  end
 
   config.vm.provider :libvirt do |libvirt|
-    libvirt.driver = "qemu"
+    libvirt.driver = "kvm"
+    libvirt.host = "192.168.99.50"
     libvirt.qemu_use_session = false
     libvirt.connect_via_ssh = true
     libvirt.username = "root"

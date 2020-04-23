@@ -85,3 +85,4 @@ okd-master.otg.ae openshift_ip=192.168.99.51
 okd-master.otg.ae openshift_ip=192.168.99.51 openshift_node_group_name='node-config-master-infra'
 okd-node1.otg.ae openshift_ip=192.168.99.52 openshift_node_group_name='node-config-compute'
 okd-node2.otg.ae openshift_ip=192.168.99.53 openshift_node_group_name='node-config-compute'
+okd-node3.otg.ae openshift_ip=192.168.99.54 openshift_node_group_name='node-config-compute'
