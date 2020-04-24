@@ -27,3 +27,15 @@ For production or other security installation , update with your own ssh keys.
 - By default `htpassword` is the authentication method. After installation you should create a user by `sudo htpasswd /etc/origin/master/htpasswd admin`
 - Give this user cluster admin previllege by `oc adm policy add-cluster-role-to-user cluster-admin admin`
 - Login to your OKD by `oc login -u admin https://<okdmaster-host>:8443` or Using web browser `https://<okdmaster-host>:8443`
+
+### Rook Configuration
+
+- open `rook` directory
+- Deploy manifest step by step
+
+> oc create -f common.yaml
+> oc create -f operator-openshift.yaml
+> oc create -f cluster.yaml
+> oc create -f storageclass.yaml
+> oc create -f pvc.yaml
+> oc create -f pod.yaml
