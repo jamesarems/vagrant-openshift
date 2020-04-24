@@ -2,9 +2,9 @@
 
 ### Setup's are,
 
-- 1 master and 2 worker nodes
-- OS CentOS 7.x
-- Additional disk for rook Ceph
+- 1 master and 3 worker nodes
+- OS CentOS 7.x [ `CPU - 6` , `Memory - 16G`]
+- Additional disk for rook Ceph `50G`
 - Vagrant
 - Libvirt (kvm)
 
