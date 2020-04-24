@@ -34,8 +34,13 @@ For production or other security installation , update with your own ssh keys.
 - Deploy manifest step by step
 
 > oc create -f common.yaml
+<br/>
 > oc create -f operator-openshift.yaml
+<br/>
 > oc create -f cluster.yaml
+<br/>
 > oc create -f storageclass.yaml
+<br/>
 > oc create -f pvc.yaml
+<br/>
 > oc create -f pod.yaml
