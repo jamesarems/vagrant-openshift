@@ -1,5 +1,10 @@
 # OKD 3.11 Vagrant setup for CentOS 7
 
+### Branch 
+
+- master - Openshift installation and configurations only
+- rook - Openshift installation with `rook` support
+
 ### Setup's are,
 
 - 1 master and 2 worker nodes
