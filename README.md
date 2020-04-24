@@ -32,15 +32,11 @@ For production or other security installation , update with your own ssh keys.
 
 - open `rook` directory
 - Deploy manifest step by step
-
-> oc create -f common.yaml
-<br/>
-> oc create -f operator-openshift.yaml
-<br/>
-> oc create -f cluster.yaml
-<br/>
-> oc create -f storageclass.yaml
-<br/>
-> oc create -f pvc.yaml
-<br/>
-> oc create -f pod.yaml
+```sh
+$ oc create -f common.yaml
+$ oc create -f operator-openshift.yaml
+$ oc create -f cluster.yaml
+$ oc create -f storageclass.yaml
+$ oc create -f pvc.yaml
+$ oc create -f pod.yaml
+```
